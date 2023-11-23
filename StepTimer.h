@@ -37,7 +37,7 @@ namespace DX
 		uint64_t GetElapsedTicks() const noexcept
 		{
 			return m_elapsedTicks;
-		}
+		} 
 		double GetElapsedSeconds() const noexcept
 		{
 			return TicksToSeconds(m_elapsedTicks);
@@ -124,7 +124,7 @@ namespace DX
 				}
 				m_leftOverTicks += timeDelta;
 
-				while)m_leftOverTicks >= m_targetElapsedTicks)
+				while(m_leftOverTicks >= m_targetElapsedTicks)
 				{
 					m_elapsedTicks = m_targetElapsedTicks;
 					m_totalTicks += m_targetElapsedTicks;
@@ -171,5 +171,6 @@ namespace DX
 
 		bool m_isFixedTimeStep;
 		uint64_t m_targetElapsedTicks;
+		
 	};
 }
