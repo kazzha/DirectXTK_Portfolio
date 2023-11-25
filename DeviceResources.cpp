@@ -198,7 +198,7 @@ void DeviceResources::CreateDeviceResources()
 #endif
 	ThrowIfFailed(hr);
 
-#ifdef NDEBUG
+#ifndef NDEBUG
 	ComPtr<ID3D11Debug> d3dDebug;
 	if (SUCCEEDED(device.As(&d3dDebug)))
 	{
@@ -227,6 +227,84 @@ void DeviceResources::CreateDeviceResources()
 
 void DeviceResources::CreateWindowSizeDependentResources()
 {
+	if (!m_window)
+	{
+		throw std::exception("Call SetWindow with a valid Win32 window handle");
+	}
+	ID3D11RenderTargetView* nullViews[] = { nullptr };
+	m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
+	m_d3dRenderTargetView.Reset();
+	m_d3dDepthStencilView.Reset();
+	m_renderTarget.Reset();
+	m_depthStencil.Reset();
+	m_d3dContext->Flush();
+
+	const UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
+	const UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
+	const DXGI_FORMAT backBufferFormat =
+		(m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
+
+	if (m_swapChain)
+	{
+		HRESULT hr = m_swapChain->ResizeBuffers(
+			m_backBufferCount,
+			backBufferWidth,
+			backBufferHeight,
+			backBufferFormat,
+			(m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u
+		);
+
+		if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+		{
+#ifdef _DEBUG
+			char buff[64] = {};
+			sprintf_s(buff, "Device Lost on ResizeBuffers: Reason code 0x%08x\n",
+				static_cast<unsigned int>((hr == DXGI_ERROR_DEVICE_REMOVED) ?
+					m_d3dDevice->GetDeviceRemovedReason() : hr));
+			OutputDebugStringA(buff);
+#endif
+			HandleDeviceLost();
+			return;
+		}
+		else
+		{
+			ThrowIfFailed(hr);
+		}
+	}
+	else
+	{
+		DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+		swapChainDesc.Width = backBufferWidth;
+		swapChainDesc.Height = backBufferHeight;
+		swapChainDesc.Format = backBufferFormat;
+		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swapChainDesc.BufferCount = m_backBufferCount;
+		swapChainDesc.SampleDesc.Count = 1;
+		swapChainDesc.SampleDesc.Quality = 0;
+		swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+		swapChainDesc.SwapEffect =
+			(m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ?
+			DXGI_SWAP_EFFECT_FLIP_DISCARD : DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
+		swapChainDesc.Flags =
+			(m_options & c_AllowTearing) ?
+			DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u;
+
+		DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = {};
+		fsSwapChainDesc.Windowed = TRUE;
+
+		ThrowIfFailed(m_dxgiFactory->CreateSwapChainForHwnd(
+			m_d3dDevice.Get(),
+			m_window,
+			&swapChainDesc,
+			&fsSwapChainDesc,
+			nullptr, m_swapChain.ReleaseAndGetAddressOf()
+		));
+
+		ThrowIfFailed(m_dxgiFactory->MakeWindowAssociation(
+			m_window, DXGI_MWA_NO_ALT_ENTER)
+		);
+	}
 }
 
 void DeviceResources::SetWindow(HWND window, int width, int height) noexcept
