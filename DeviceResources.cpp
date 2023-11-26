@@ -305,6 +305,48 @@ void DeviceResources::CreateWindowSizeDependentResources()
 			m_window, DXGI_MWA_NO_ALT_ENTER)
 		);
 	}
+	UpdateColorSpace();
+
+	ThrowIfFailed(
+		m_swapChain->GetBuffer(0, IID_PPV_ARGS(m_renderTarget.ReleaseAndGetAddressOf()))
+	);
+	CD3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc(
+		D3D11_RTV_DIMENSION_TEXTURE2D, m_backBufferFormat
+	);
+	ThrowIfFailed(
+		m_d3dDevice->CreateRenderTargetView
+		(
+			m_renderTarget.Get(),
+			&renderTargetViewDesc,
+			m_d3dRenderTargetView.ReleaseAndGetAddressOf()
+		)
+	);
+	if (m_depthBufferFormat != DXGI_FORMAT_UNKNOWN)
+	{
+		CD3D11_TEXTURE2D_DESC depthStencilDesc(
+			m_depthBufferFormat,
+			backBufferWidth,
+			backBufferHeight,
+			1,
+			1,
+			D3D11_BIND_DEPTH_STENCIL
+		);
+		ThrowIfFailed(m_d3dDevice->CreateTexture2D(
+			&depthStencilDesc,
+			nullptr,
+			m_depthStencil.ReleaseAndGetAddressOf()
+		));
+
+		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(
+			D3D11_DSV_DIMENSION_TEXTURE2D
+		);
+		ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
+			m_depthStencil.Get(),
+			&depthStencilViewDesc,
+			m_d3dDepthStencilView.ReleaseAndGetAddressOf()
+		));
+
+	}
 }
 
 void DeviceResources::SetWindow(HWND window, int width, int height) noexcept
