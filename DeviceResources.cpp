@@ -509,10 +509,134 @@ void DeviceResources::CreateFactory()
 
 void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
+	*ppAdapter = nullptr;
+
+	ComPtr<IDXGIAdapter1> adapter;
+
+#if defined(__dxgi1_6_h__) && defined(NTDDI_WIN10_RS4)
+	ComPtr<IDXGIFactory6> factory6;
+	HRESULT hr = m_dxgiFactory.As(&factory6);
+	if (SUCCEEDED(hr))
+	{
+		for (UINT adapterIndex = 0;
+			SUCCEEDED(factory6->EnumAdapterByGpuPreference(
+				adapterIndex,
+				DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE,
+				IID_PPV_ARGS(adapter.ReleaseAndGetAddressOf()))
+			);
+			adapterIndex++)
+		{
+			DXGI_ADAPTER_DESC1 desc;
+			ThrowIfFailed(adapter->GetDesc1(&desc));
+
+			if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+			{
+				continue;
+			}
+
+#ifdef _DEBUG
+			wchar_t buff[256] = {};
+			swprintf_s(buff, L"Direct3D Adapter (%u): VID:%04X, PID:%04X - %ls\n",
+				adapterIndex,
+				desc.VendorId,
+				desc.DeviceId,
+				desc.Description);
+			OutputDebugStringW(buff);
+#endif 
+
+			break;
+
+		}
+	}
+#endif 
+	if (!adapter)
+	{
+		for (UINT adapterIndex = 0;
+			SUCCEEDED(m_dxgiFactory->EnumAdapters1(
+				adapterIndex,
+				adapter.ReleaseAndGetAddressOf()));
+			adapterIndex++)
+		{
+			DXGI_ADAPTER_DESC1 desc;
+			ThrowIfFailed(adapter->GetDesc1(&desc));
+
+			if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+			{
+				continue;
+			}
+#ifdef _DEBUG
+			wchar_t buff[256] = {};
+			swprintf_s(buff, L"Direct3D Adapter (%u): VID:%04X, PID:%04X - %ls\n",
+				adapterIndex,
+				desc.VendorId,
+				desc.DeviceId,
+				desc.Description);
+			OutputDebugStringW(buff);
+#endif // _DEBUG
+			break;
+		}
+	}
+
+	*ppAdapter = adapter.Detach();
 }
 
 void DeviceResources::UpdateColorSpace()
 {
+	DXGI_COLOR_SPACE_TYPE colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709;
+	bool isDisplayHDR10 = false;
+
+#if defined(NTDDI_WIN10_RS2)
+	if (m_swapChain)
+	{
+		ComPtr<IDXGIOutput> output;
+		if (SUCCEEDED(m_swapChain->GetContainingOutput(output.GetAddressOf())))
+		{
+			ComPtr<IDXGIOutput6> output6;
+			if (SUCCEEDED(output.As(&output6)))
+			{
+				DXGI_OUTPUT_DESC1 desc;
+				ThrowIfFailed(output6->GetDesc1(&desc));
+
+				if (desc.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020)
+				{
+					isDisplayHDR10 = true;
+				}
+			}
+		}
+	}
+#endif // defined(NTDDI_WIN10_RS2)
+
+	if ((m_options & c_EnableHDR) && isDisplayHDR10)
+	{
+		switch (m_backBufferFormat)
+		{
+		case DXGI_FORMAT_R10G10B10A2_UNORM:
+			colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020;
+			break;
+
+		case DXGI_FORMAT_R16G16B16A16_FLOAT:
+			colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709;
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	m_colorSpace = colorSpace;
+
+	ComPtr<IDXGISwapChain3> swapChain3;
+	if (SUCCEEDED(m_swapChain.As(&swapChain3)))
+	{
+		UINT colorSpaceSupport = 0;
+		if (SUCCEEDED(
+			swapChain3->CheckColorSpaceSupport(colorSpace, &colorSpaceSupport))
+			&& (colorSpaceSupport & DXGI_SWAP_CHAIN_COLOR_SPACE_SUPPORT_FLAG_PRESENT)
+			)
+		{
+			ThrowIfFailed(swapChain3->SetColorSpace1(colorSpace));
+		}
+	}
 }
 
 
