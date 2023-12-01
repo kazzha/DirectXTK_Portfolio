@@ -22,9 +22,10 @@ Game::~Game()
 void Game::Initialize(HWND window, int width, int height)
 {
 	m_keyboard = std::make_unique<Keyboard>();
+	m_mouse = std::make_unique<Mouse>();
 	m_mouse->SetWindow(window); // 마우스를 어떤 윈도우에서 사용할지 마우스 내부에 window 저장
 
-	m_deviceResources->SetWindow(window, width, height);
+	m_deviceResources->SetWindow(window, width, height); 
 
 	m_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();

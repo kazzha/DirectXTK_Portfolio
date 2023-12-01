@@ -98,7 +98,7 @@ namespace DX
 			}
 
 			uint64_t timeDelta = static_cast<uint64_t>(
-				currentTime.QuadPart - m_qpcLasttime.QuadPart
+				currentTime.QuadPart - m_qpcLastTime.QuadPart
 				);
 
 			m_qpcLastTime = currentTime;
@@ -128,7 +128,7 @@ namespace DX
 				{
 					m_elapsedTicks = m_targetElapsedTicks;
 					m_totalTicks += m_targetElapsedTicks;
-					m_leftOverTicks == m_targetElapsedTicks;
+					m_leftOverTicks = m_targetElapsedTicks;
 					m_frameCount++;
 
 					update();
