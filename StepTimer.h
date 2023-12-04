@@ -2,8 +2,6 @@
 
 #include <cmath>
 #include <cstdint>
-#include <exception>
-#include "Windows.h"
 
 namespace DX
 {

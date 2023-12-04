@@ -1,13 +1,27 @@
 #include "pch.h"
-#include "Game.h"
 
 using namespace DirectX;
 
-
-
 namespace
 {
-	std::unique_ptr<Game> g_game;
+	class MyGame final : public Game
+	{
+	public:
+		~MyGame() override {}
+
+	protected:
+		void Update(DX::StepTimer const& timer) override
+		{
+			Game::Update(timer);
+		 }
+
+		void Render() override
+		{
+			Game::Render();
+		}
+	};
+
+	std::unique_ptr<MyGame> g_game;
 }
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -34,7 +48,7 @@ int WINAPI wWinMain(
 	if (FAILED(hr))
 		return 1;
 
-	g_game = std::make_unique<Game>();
+	g_game = std::make_unique<MyGame>();
 	{
 		WNDCLASSEXW wcex = {};
 		wcex.cbSize = sizeof(WNDCLASSEXW);

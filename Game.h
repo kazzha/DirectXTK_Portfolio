@@ -1,13 +1,10 @@
 #pragma once
 
-#include "DeviceResources.h"
-#include "StepTimer.h"
-
-class Game final : public DX::IDeviceNotify
+class Game : public DX::IDeviceNotify
 {
 public:
 	Game() noexcept(false);
-	~Game();
+	virtual ~Game();
 
 	Game(Game&&) = default;
 	Game& operator= (Game&&) = default;
@@ -15,30 +12,30 @@ public:
 	Game(Game const&) = delete;
 	Game& operator= (Game const&) = delete;
 
-	void Initialize(HWND window, int width, int height);
+	virtual void Initialize(HWND window, int width, int height);
 
-	void Tick();
+	virtual void Tick();
 
-	void OnDeviceLost() override;
-	void OnDeviceRestored() override;
+	virtual void OnDeviceLost() override;
+	virtual void OnDeviceRestored() override;
 
-	void OnActivated();
-	void OnDeactivated();
-	void OnSuspending();
-	void OnResuming();
-	void OnWindowMoved();
-	void OnWindowSizeChanged(int width, int height);
+	virtual void OnActivated();
+	virtual void OnDeactivated();
+	virtual void OnSuspending();
+	virtual void OnResuming();
+	virtual void OnWindowMoved();
+	virtual void OnWindowSizeChanged(int width, int height);
 
-	void GetDefaultSize(int& width, int& height) const noexcept;
+	virtual void GetDefaultSize(int& width, int& height) const noexcept;
 
-private:
-	void Update(DX::StepTimer const& timer);
-	void Render();
+protected:
+	virtual void Update(DX::StepTimer const& timer);
+	virtual void Render();
 
-	void Clear();
+	virtual void Clear();
 
-	void CreateDeviceDependentResources();
-	void CreateWindowSizeDependentResources();
+	virtual void CreateDeviceDependentResources();
+	virtual void CreateWindowSizeDependentResources();
 
 	std::unique_ptr<DX::DeviceResources> m_deviceResources;
 
@@ -46,8 +43,7 @@ private:
 
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	std::unique_ptr<DirectX::Mouse> m_mouse;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texCat;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texBug;
+
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	std::unique_ptr<DirectX::CommonStates> m_commonStates;
 };
