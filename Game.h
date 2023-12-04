@@ -46,6 +46,9 @@ private:
 
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	std::unique_ptr<DirectX::Mouse> m_mouse;
-
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texCat;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texBug;
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	std::unique_ptr<DirectX::CommonStates> m_commonStates;
 };
 

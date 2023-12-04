@@ -113,6 +113,26 @@ void Game::Render()
 
 	m_deviceResources->PIXBeginEvent(L"Render");
 
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
+
+	m_spriteBatch->Draw(
+		m_texBug.Get(),
+		XMFLOAT2(0.0f, 0.0f),
+		nullptr,
+		Colors::White,
+		0.0f,
+		XMFLOAT2(0.0f, 0.0f),
+		3.0f
+	);
+	m_spriteBatch->Draw(
+		m_texCat.Get(), 
+		XMFLOAT2(50.0f, 0.0f),
+		nullptr,
+		Colors::White,
+		0.0f,
+		XMFLOAT2(0.0f, 0.0f));
+	m_spriteBatch->End();
+
 	m_deviceResources->PIXEndEvent();
 	
 	m_deviceResources->Present();
@@ -146,6 +166,29 @@ void Game::Clear()
 #pragma region Direct3D Resources
 void Game::CreateDeviceDependentResources()
 {
+	auto device = m_deviceResources->GetD3DDevice();
+	auto context = m_deviceResources->GetD3DDeviceContext();
+
+	m_commonStates = std::make_unique<CommonStates>(device);
+
+	m_spriteBatch = std::make_unique<SpriteBatch>(context);
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,
+			L"Assets/bug1_1.png", nullptr,
+			m_texBug.ReleaseAndGetAddressOf()
+		)
+	);
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,
+			L"Assets/bapburger.png", nullptr,
+			m_texCat.ReleaseAndGetAddressOf()
+		)
+	);
+
 }
 
 void Game::CreateWindowSizeDependentResources()
@@ -155,6 +198,10 @@ void Game::CreateWindowSizeDependentResources()
 
 void Game::OnDeviceLost()
 {
+	m_texCat.Reset();
+	m_texBug.Reset();
+	m_spriteBatch.reset();
+	m_commonStates.reset();
 }
 
 void Game::OnDeviceRestored()
