@@ -82,6 +82,7 @@
 #include "rapidjson/document.h"
 #pragma warning(pop)
 
+#include "Utility.h"
 #include "StepTimer.h"
 #include "DeviceResources.h"
 #include "TextureManager.h"

@@ -8,17 +8,31 @@ namespace rapidjson
 
 namespace DX
 {
-	class JSONManager
+	class JsonManager
 	{
 	public:
-		static JSONManager& Instance()
+		static JsonManager& Instance()
 		{
 			static JsonManager instance;
 			return instance;
 		}
 
 	public:
-		JSONManager();
+		JsonManager();
+		~JsonManager();
+
+		JsonManager(JsonManager&&) = delete;
+		JsonManager& operator= (JsonManager&&) = delete;
+
+		JsonManager(JsonManager const&) = delete;
+		JsonManager& operator= (JsonManager const&) = delete;
+
+		rapidjson::WDocument* CreateDocument(LPCWSTR filename);
+		void Remove(LPCWSTR filename);
+		void ReleaseAll();
+
+	private:
+		std::map<std::wstring, std::unique_ptr<rapidjson::WDocument>> m_documents;
 	};
 
 }
