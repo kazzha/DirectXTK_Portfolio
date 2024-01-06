@@ -12,6 +12,15 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="JSONManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="AnimatedActor.h" />
+    <ClInclude Include="ActorManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -23,6 +32,15 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="JSONManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AnimatedActor.cpp" />
+    <ClCompile Include="ActorManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

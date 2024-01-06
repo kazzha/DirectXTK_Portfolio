@@ -1,14 +1,40 @@
 #include "pch.h"
 
 using namespace DirectX;
+using namespace DX;
 
 namespace
 {
+	enum class Layer : int
+	{
+		Background = 0,
+		Character = 1
+	};
+
 	class MyGame final : public Game
 	{
 	public:
 		~MyGame() override {}
 
+	public:
+		void Initialize(HWND window, int width, int height) override
+		{
+			Game::Initialize(window, width, height);
+
+			for (int i = 0; i < 10; i++)
+			{
+				auto pPotion = ActorManager::Instance().Create<Actor>
+					(static_cast<int>(Layer::Character),
+						L"Assets/poison_potion.png"
+					);
+				pPotion->SetPosition(100.0f + rand() % 300, 100.0f + rand() % 300);
+			}
+
+			auto pBack = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Background),
+				L"Assets/poison_potion.png");
+			pBack->SetPivot(0.0f, 0.0f);
+			pBack->SetPosition(0.0f, 0.0f);
+		}
 	protected:
 		void Update(DX::StepTimer const& timer) override
 		{

@@ -4,6 +4,7 @@ extern void ExitGame() noexcept;
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
+using namespace DX;
 
 using Microsoft::WRL::ComPtr;
 
@@ -15,7 +16,8 @@ Game::Game() noexcept(false)
 
 Game::~Game()
 {
-
+	JsonManager::Instance().ReleaseAll();
+	TextureManager::Instance().ReleaseAll();
 }
 
 void Game::Initialize(HWND window, int width, int height)
@@ -31,6 +33,8 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_deviceResources->CreateWindowSizeDependentResources();
 	CreateWindowSizeDependentResources();
+
+	TextureManager::Instance().Initialize(m_deviceResources.get());
 }
 
 #pragma region Frame Update
@@ -47,11 +51,14 @@ void Game::Tick()
 
 void Game::Update(DX::StepTimer const& timer)
 {
-	auto kb = m_keyboard->GetState();
+	auto kb = Keyboard::Get().GetState();
+
 	if (kb.Escape)
 	{
 		ExitGame();
 	}
+
+	ActorManager::Instance().Update(timer.GetElapsedSeconds());
 }
 
 #pragma endregion
@@ -114,6 +121,8 @@ void Game::Render()
 
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
 
+	ActorManager().Instance().Draw(m_spriteBatch.get());
+
 	m_spriteBatch->End();
 
 	m_deviceResources->PIXEndEvent();
@@ -167,11 +176,17 @@ void Game::OnDeviceLost()
 {
 	m_spriteBatch.reset();
 	m_commonStates.reset();
+
+	TextureManager::Instance().OnDeviceLost();
+	ActorManager::Instance().OnDeviceLost();
 }
 
 void Game::OnDeviceRestored()
 {
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
+
+	TextureManager::Instance().OnDeviceRestored();
+	ActorManager::Instance().OnDeviceRestored();
 }
 #pragma endregion
