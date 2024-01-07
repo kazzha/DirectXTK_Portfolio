@@ -23,10 +23,13 @@ namespace
 
 			for (int i = 0; i < 10; i++)
 			{
-				auto pPotion = ActorManager::Instance().Create<Actor>
+				auto pPotion = ActorManager::Instance().Create<AnimatedActor>
 					(static_cast<int>(Layer::Character),
-						L"Assets/poison_potion.png"
+						L"Assets/bugSprite.png",
+						L"Assets/bugSprite.json",
+						L"Assets/BugAnimation.json"
 					);
+				pPotion->SetAnimation(L"Die");
 				pPotion->SetPosition(100.0f + rand() % 300, 100.0f + rand() % 300);
 			}
 
