@@ -3,8 +3,7 @@
 using namespace DX;
 using namespace DirectX;
 
-AnimatedActor::AnimatedActor() :
-	Actor(),
+AnimatedActor::AnimatedActor() : Actor(),
 	m_animations{nullptr},
 	m_animation{nullptr},
 	m_paused{false},

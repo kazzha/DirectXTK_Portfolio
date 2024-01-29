@@ -21,7 +21,10 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AnimatedActor.h" />
     <ClInclude Include="ActorManager.h" />
-    <ClInclude Include="Slime.h" />
+    <ClInclude Include="Wall.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Goal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -42,7 +45,10 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AnimatedActor.cpp" />
     <ClCompile Include="ActorManager.cpp" />
-    <ClCompile Include="Slime.cpp" />
+    <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Goal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

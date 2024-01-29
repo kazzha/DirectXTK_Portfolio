@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace DX;
+
 class Game : public DX::IDeviceNotify
 {
 public:
@@ -25,6 +27,7 @@ public:
 	virtual void OnResuming();
 	virtual void OnWindowMoved();
 	virtual void OnWindowSizeChanged(int width, int height);
+	void processInput(WPARAM wParam);
 
 	virtual void GetDefaultSize(int& width, int& height) const noexcept;
 
@@ -46,5 +49,7 @@ protected:
 
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	std::unique_ptr<DirectX::CommonStates> m_commonStates;
+	DX::Player* m_Player;
+	std::vector<Actor*> m_Object;
 };
 

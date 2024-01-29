@@ -1,0 +1,76 @@
+{
+    "animations": [
+        {
+            "name": "MoveBack",
+            "loop": true,
+            "frames": [
+                {
+                    "name": "player_02.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_03.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_04.png",
+                    "duration": 0.2
+                }
+            ]
+        },
+        {
+            "name": "MoveForward",
+            "loop": true,
+            "frames": [
+                {
+                    "name": "player_01.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_23.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_24.png",
+                    "duration": 0.2
+                }
+            ]
+        },
+        {
+            "name": "MoveRight",
+            "loop": true,
+            "frames": [
+                {
+                    "name": "player_11.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_12.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_13.png",
+                    "duration": 0.2
+                }
+            ]
+        },
+        {
+            "name": "MoveLeft",
+            "loop": true,
+            "frames": [
+                {
+                    "name": "player_14.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_15.png",
+                    "duration": 0.2
+                },
+                {
+                    "name": "player_16.png",
+                    "duration": 0.2
+                }
+            ]
+        }
+    ]
+}

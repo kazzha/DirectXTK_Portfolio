@@ -88,9 +88,15 @@
 #include "TextureManager.h"
 #include "JSONManager.h"
 #include "Actor.h"
+#include "Wall.h"
+#include "Box.h"
+#include "Goal.h"
 #include "AnimatedActor.h"
+#include "Player.h"
 #include "ActorManager.h"
+
 #include "Game.h"
+
 
 namespace DX
 {

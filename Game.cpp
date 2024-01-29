@@ -35,6 +35,7 @@ void Game::Initialize(HWND window, int width, int height)
 	CreateWindowSizeDependentResources();
 
 	TextureManager::Instance().Initialize(m_deviceResources.get());
+	m_Object.resize(56, nullptr);
 }
 
 #pragma region Frame Update
@@ -69,6 +70,7 @@ void Game::Update(DX::StepTimer const& timer)
 #pragma region Message Handlers
 void Game::OnActivated()
 {
+
 }
 
 void Game::OnDeactivated()
@@ -97,6 +99,11 @@ void Game::OnWindowSizeChanged(int width, int height)
 		return;
 
 	CreateWindowSizeDependentResources();
+}
+
+void Game::processInput(WPARAM wParam)
+{
+	m_Player->Update(m_timer.GetElapsedSeconds(),wParam);
 }
 
 void Game::GetDefaultSize(int& width, int& height) const noexcept
@@ -165,6 +172,8 @@ void Game::CreateDeviceDependentResources()
 
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
+	
+	
 }
 
 void Game::CreateWindowSizeDependentResources()
