@@ -14,6 +14,7 @@ namespace DX
 		DirectX::XMFLOAT2 XM_CALLCONV GetPosition() { return m_position; }
 		void SetPivot(float x, float y) { m_pivot.x = x; m_pivot.y = y; }
 		void SetRotation(float r) { m_rotation = r; }
+		float GetLayer() { return m_layer; }
 
 		virtual void OnDeviceLost() override;
 		virtual void OnDeviceRestored() override;

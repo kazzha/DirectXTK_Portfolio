@@ -10,9 +10,12 @@ namespace DX
         ~Player();
         virtual void Update(double delta, WPARAM wParam);
         void Move(float X, float Y);
+         
 
     public:
-        float maxSpeed;
+        std::vector<Actor*>* StageInfo;
+        int PlayerIndex;
+        Goal* hasGoal;
     };
 }
 

@@ -28,6 +28,10 @@ public:
 	virtual void OnWindowMoved();
 	virtual void OnWindowSizeChanged(int width, int height);
 	void processInput(WPARAM wParam);
+	void Stage1Initialize();
+	void Stage2Initialize();
+
+
 
 	virtual void GetDefaultSize(int& width, int& height) const noexcept;
 
@@ -49,7 +53,13 @@ protected:
 
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	std::unique_ptr<DirectX::CommonStates> m_commonStates;
+	std::unique_ptr<DirectX::SpriteFont> m_font;
+	DirectX::SimpleMath::Vector2 m_fontPos;
+
 	DX::Player* m_Player;
-	std::vector<Actor*> m_Object;
+	std::vector<Actor*> m_Stage1;
+	std::vector<Actor*> m_Stage2;
+	int walkCount;
+	int remainBox;
 };
 

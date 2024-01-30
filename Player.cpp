@@ -4,9 +4,9 @@
 using namespace DX;
 using namespace DirectX;
 
-Player::Player() : maxSpeed(2.0f)
+Player::Player() : PlayerIndex(0) , hasGoal(nullptr), StageInfo(nullptr)
 {
-	
+
 }
 
 Player::~Player()
@@ -16,11 +16,25 @@ Player::~Player()
 void Player::Update(double delta, WPARAM wParam)
 {
 	if (wParam == VK_LEFT)
-	{
-		Move(m_position.x - 32, m_position.y);
+	{	
 		AnimatedActor::SetAnimation(L"MoveLeft");
 		Play();
 		AnimatedActor::Update(delta);
+
+		if (dynamic_cast<Wall*>((*StageInfo)[PlayerIndex - 1]) != nullptr)
+		{
+			return;
+		}
+		else if (dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - 1]) != nullptr)
+		{
+			hasGoal = dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - 1]);
+			
+			(*StageInfo)[PlayerIndex - 1] = (*StageInfo)[PlayerIndex];
+			PlayerIndex -= 1;
+			Move(m_position.x - 64, m_position.y);
+		}
+		
+		
 	}
 	else if (wParam == VK_RIGHT)
 	{

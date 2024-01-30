@@ -5,13 +5,7 @@ using namespace DX;
 
 namespace
 {
-	enum class Layer : int
-	{
-		Background = 0,
-		Evironment = 1,
-		Character = 2
-	};
-
+	
 	class MyGame final : public Game
 	{
 	public:
@@ -22,43 +16,6 @@ namespace
 		{
 			Game::Initialize(window, width, height);
 
-			
-			auto pBack = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Background),
-				L"Assets/socoban_background.png");
-			pBack->SetPivot(0.0f, 0.0f);
-
-			m_Player = ActorManager::Instance().Create<Player>(static_cast<int>(Layer::Character),
-				L"Assets/playerSprite.png", L"Assets/playerSprite.json", L"Assets/PlayerAnimation.json");
-
-			m_Player->SetAnimation(L"MoveRight");
-			m_Player->SetPosition(64.f, 64.0f);
-			m_Player->Stop();
-
-			float startXposition{ 64.0f };
-			float startYposition{ 64.0f };
-
-			
-			for (int i = 0; i < 53; i++)
-			{
-				if (i != 2 && i != 39 && i != 47)
-				{
-					if (startYposition == 64.0f || startYposition == 384.0f || startXposition == 64.0f || startXposition == 576.0f) {
-						m_Object[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Evironment),
-							L"Assets/red_block.png");
-						m_Object[i]->SetPosition(startXposition, startYposition);
-					}
-				}
-				else
-				{
-					m_Object[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Evironment),
-						L"Assets/brown_block.png");
-					m_Object[i]->SetPosition(startXposition, startYposition);
-				}
-				startXposition += 64.0f;
-
-				if (i % 8 == 7) { startYposition += 64.0f; startXposition = 64.0f; }
-			}
-		
 
 		}
 	protected:
