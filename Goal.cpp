@@ -1,2 +1,12 @@
 #include "pch.h"
-#include "Goal.h"
+
+using namespace DX;
+
+Goal::Goal() : color("")
+{
+
+}
+
+Goal::~Goal()
+{
+}

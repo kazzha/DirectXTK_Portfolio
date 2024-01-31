@@ -30,6 +30,7 @@ public:
 	void processInput(WPARAM wParam);
 	void Stage1Initialize();
 	void Stage2Initialize();
+	void Retry();
 
 
 
@@ -61,5 +62,6 @@ protected:
 	std::vector<Actor*> m_Stage2;
 	int walkCount;
 	int remainBox;
+	int stageNum;
 };
 

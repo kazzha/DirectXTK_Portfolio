@@ -15,7 +15,9 @@ namespace DX
     public:
         std::vector<Actor*>* StageInfo;
         int PlayerIndex;
-        Goal* hasGoal;
+        Goal* currentGoal;
+        Goal* alreadyGoal;
+        int* walkCount;
     };
 }
 

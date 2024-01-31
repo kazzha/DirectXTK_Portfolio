@@ -280,6 +280,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case VK_DOWN:
 			game->processInput(wParam);
 			break;
+
+		case 0x52:
+			game->Retry();
+
 		}
 	case WM_KEYUP:
 	case WM_SYSKEYUP:

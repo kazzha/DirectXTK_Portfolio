@@ -5,13 +5,22 @@ namespace DX
     class Box :
         public Actor
     {
+    public:
+        Box();
+        ~Box();
 
-        void Move(float X, float Y);
-        bool GetHasGoal() { return hasGoal; }
-        void SetHasGOal(bool currentGoal) { hasGoal = currentGoal; }
+        bool MoveForward();
+        bool MoveBackward();
+        bool MoveLeft();
+        bool MoveRight();
 
-    private:
-        bool hasGoal;
+    public:
+        std::string color;
+        Goal* currentGoal;
+        Goal* alreadyGoal;
+        int boxIndex;
+        std::vector<Actor*>* StageInfo;
+        int* remainBoxCount;
     };
 }
 

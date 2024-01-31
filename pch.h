@@ -89,13 +89,13 @@
 #include "JSONManager.h"
 #include "Actor.h"
 #include "Wall.h"
-#include "Box.h"
 #include "Goal.h"
 #include "AnimatedActor.h"
 #include "Player.h"
 #include "ActorManager.h"
-
+#include "Box.h"
 #include "Game.h"
+
 
 
 namespace DX
