@@ -24,6 +24,9 @@ Game::Game() noexcept(false)
 {
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
+	m_Player = nullptr;
+	walkCount = 0;
+	remainBox = 0;
 	stageNum = 1;
 }
 
@@ -75,6 +78,12 @@ void Game::Update(DX::StepTimer const& timer)
 	}
 
 	ActorManager::Instance().Update(timer.GetElapsedSeconds());
+
+	if (remainBox == 0)
+	{
+		stageNum = 2;
+		StageChange();
+	}
 }
 
 #pragma endregion
@@ -252,6 +261,141 @@ void Game::Stage1Initialize()
 
 void Game::Stage2Initialize()
 {
+	m_Stage2.resize(70, nullptr);
+	m_Player = ActorManager::Instance().Create<Player>(static_cast<int>(Layer::Character),
+		L"Assets/playerSprite.png", L"Assets/playerSprite.json", L"Assets/PlayerAnimation.json");
+
+	m_Player->SetAnimation(L"MoveForward");
+	m_Player->SetPosition(440.0f, 160.0f);
+	m_Stage2[15] = m_Player;
+	m_Player->Stop();
+	m_Player->StageInfo = &m_Stage2;
+	m_Player->PlayerIndex = 15;
+	m_Player->walkCount = &walkCount;
+
+	walkCount = 0;
+	remainBox = 5;
+
+	float startXposition{ 120.0f };
+	float startYposition{ 96.0f };
+
+	for (int i = 0; i < 70; i++)
+	{
+		if (i / 10 == 0)
+		{
+			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+				L"Assets/ground_05.png");
+			pTile->SetPosition(startXposition, startYposition);
+			
+			if (i == 4 || i == 5 || i == 6)
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+		}
+		if (i / 10 == 1)
+		{
+			if (i != 15)
+			{
+				auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+					L"Assets/ground_05.png");
+				pTile->SetPosition(startXposition, startYposition);
+			}
+			else
+			{
+				auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+					L"Assets/ground_06.png");
+				pTile->SetPosition(startXposition, startYposition);
+			}
+			if (i == 12 || i == 13 || i == 14 || i == 16 || i == 17 || i == 18)
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+			
+		}
+		if (i / 10 == 2)
+		{
+			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+				L"Assets/ground_06.png");
+			pTile->SetPosition(startXposition, startYposition);
+			
+			 if (i == 20 || i == 21 || i == 22 || i == 28 || i == 29)
+			 { 
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			 }
+		}
+		if (i / 10 == 3)
+		{
+			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+				L"Assets/ground_06.png");
+			pTile->SetPosition(startXposition, startYposition);
+
+			if (i == 30 || i == 39)
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+		}
+		if (i / 10 == 4)
+		{
+			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+				L"Assets/ground_06.png");
+			pTile->SetPosition(startXposition, startYposition);
+			
+			if (i == 40 || i == 41 || i == 42 || i == 48 || i == 49)
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+		}
+		if (i / 10 == 5)
+		{
+			if (i != 55)
+			{
+				auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+					L"Assets/ground_05.png");
+				pTile->SetPosition(startXposition, startYposition);
+			}
+			else
+			{
+				auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+					L"Assets/ground_06.png");
+				pTile->SetPosition(startXposition, startYposition);
+			}
+			if (i == 52 || i == 53 || i == 54 || i == 56 || i == 57 || i == 58 )
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+			
+		}
+		if (i / 10 == 6)
+		{
+			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
+				L"Assets/ground_05.png");
+			pTile->SetPosition(startXposition, startYposition);
+			
+			if (i == 64 || i == 65 || i == 66)
+			{
+				m_Stage2[i] = ActorManager::Instance().Create<Wall>(static_cast<int>(Layer::Wall),
+					L"Assets/brown_block.png");
+				m_Stage2[i]->SetPosition(startXposition, startYposition);
+			}
+		}
+
+		startXposition += 64.0f;
+		if (i % 10 == 9) { startYposition += 64.0f; startXposition = 120.0f; }
+
+	}
+
 }
 
 void Game::Retry()
@@ -265,6 +409,15 @@ void Game::Retry()
 	{
 		Stage1Initialize();
 	}
+	else if (stageNum == 2)
+	{
+		Stage2Initialize();
+	}
+}
+
+void Game::StageChange()
+{
+	Retry();
 }
 
 void Game::GetDefaultSize(int& width, int& height) const noexcept

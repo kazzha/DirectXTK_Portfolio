@@ -5,6 +5,7 @@ namespace DX
     class Box :
         public Actor
     {
+
     public:
         Box();
         ~Box();

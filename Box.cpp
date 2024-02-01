@@ -139,7 +139,7 @@ bool DX::Box::MoveRight()
 		(*StageInfo)[boxIndex] = this;
 		m_position.x += 64;
 		(*StageInfo)[boxIndex - 1] = nullptr;
-		
+
 		return true;
 	}
 	else if (dynamic_cast<Box*>((*StageInfo)[boxIndex + 1]) != nullptr)

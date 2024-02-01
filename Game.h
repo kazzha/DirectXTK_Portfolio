@@ -31,7 +31,7 @@ public:
 	void Stage1Initialize();
 	void Stage2Initialize();
 	void Retry();
-
+	void StageChange();
 
 
 	virtual void GetDefaultSize(int& width, int& height) const noexcept;
