@@ -22,6 +22,7 @@ namespace DX
         int boxIndex;
         std::vector<Actor*>* StageInfo;
         int* remainBoxCount;
+        int indexRow;
     };
 }
 

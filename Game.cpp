@@ -143,6 +143,7 @@ void Game::Stage1Initialize()
 	m_Player->StageInfo = &m_Stage1;
 	m_Player->PlayerIndex = 9;
 	m_Player->walkCount = &walkCount;
+	m_Player->indexRow = 8;
 
 	float startXposition{ 160.0f };
 	float startYposition{ 96.0f };
@@ -182,6 +183,7 @@ void Game::Stage1Initialize()
 			box->remainBoxCount = &remainBox;
 			box->boxIndex = i;
 			box->color = "brown";
+			box->indexRow = 8;
 			m_Stage1[i] = box;
 			
 		}
@@ -194,6 +196,7 @@ void Game::Stage1Initialize()
 			box->remainBoxCount = &remainBox;
 			box->boxIndex = i;
 			box->color = "blue";
+			box->indexRow = 8;
 			m_Stage1[i] = box;
 		}
 		else if (i == 34)
@@ -205,6 +208,7 @@ void Game::Stage1Initialize()
 			box->remainBoxCount = &remainBox;
 			box->boxIndex = i;
 			box->color = "red";
+			box->indexRow = 8;
 			m_Stage1[i] = box;
 		}
 		else if (i == 37)
@@ -216,6 +220,7 @@ void Game::Stage1Initialize()
 			box->remainBoxCount = &remainBox;
 			box->boxIndex = i;
 			box->color = "green";
+			box->indexRow = 8;
 			m_Stage1[i] = box;
 		}
 		else if (i == 19)
@@ -272,9 +277,10 @@ void Game::Stage2Initialize()
 	m_Player->StageInfo = &m_Stage2;
 	m_Player->PlayerIndex = 15;
 	m_Player->walkCount = &walkCount;
+	m_Player->indexRow = 10;
 
 	walkCount = 0;
-	remainBox = 5;
+	remainBox = 4;
 
 	float startXposition{ 120.0f };
 	float startYposition{ 96.0f };
@@ -294,7 +300,7 @@ void Game::Stage2Initialize()
 				m_Stage2[i]->SetPosition(startXposition, startYposition);
 			}
 		}
-		if (i / 10 == 1)
+		else if (i / 10 == 1)
 		{
 			if (i != 15)
 			{
@@ -316,7 +322,7 @@ void Game::Stage2Initialize()
 			}
 			
 		}
-		if (i / 10 == 2)
+		else if (i / 10 == 2)
 		{
 			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
 				L"Assets/ground_06.png");
@@ -328,8 +334,45 @@ void Game::Stage2Initialize()
 					L"Assets/brown_block.png");
 				m_Stage2[i]->SetPosition(startXposition, startYposition);
 			 }
+			 if (i == 25)
+			 {
+				 Goal* goal = ActorManager::Instance().Create<Goal>(static_cast<int>(Layer::Goal),
+					 L"Assets/dia_blue.png");
+				 goal->SetPosition(startXposition, startYposition);
+				 goal->color = "blue";
+
+				 Box* box = ActorManager::Instance().Create<Box>(static_cast<int>(Layer::Box),
+					 L"Assets/green_box.png");
+				 box->SetPosition(startXposition, startYposition);
+				 box->StageInfo = &m_Stage2;
+				 box->remainBoxCount = &remainBox;
+				 box->boxIndex = i;
+				 box->color = "green";
+				 box->indexRow = 10;
+				 box->alreadyGoal = goal;
+				 m_Stage2[i] = box;
+			 }
+			 if (i == 26)
+			 { 
+				 Goal* goal = ActorManager::Instance().Create<Goal>(static_cast<int>(Layer::Goal),
+					 L"Assets/dia_blue.png");
+				 goal->SetPosition(startXposition, startYposition);
+				 goal->color = "blue";
+	
+				 Box* box = ActorManager::Instance().Create<Box>(static_cast<int>(Layer::Box),
+					 L"Assets/blue_box.png");
+				 box->SetPosition(startXposition, startYposition);
+				 box->StageInfo = &m_Stage2;
+				 box->remainBoxCount = &remainBox;
+				 box->boxIndex = i;
+				 box->color = "blue";
+				 box->indexRow = 10;
+				 box->alreadyGoal = goal;
+				 m_Stage2[i] = box;
+
+			 }
 		}
-		if (i / 10 == 3)
+		else if (i / 10 == 3)
 		{
 			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
 				L"Assets/ground_06.png");
@@ -341,8 +384,59 @@ void Game::Stage2Initialize()
 					L"Assets/brown_block.png");
 				m_Stage2[i]->SetPosition(startXposition, startYposition);
 			}
+			if (i == 31)
+			{
+				Goal* goal = ActorManager::Instance().Create<Goal>(static_cast<int>(Layer::Goal),
+					L"Assets/dia_red.png");
+				goal->SetPosition(startXposition, startYposition);
+				goal->color = "red";
+				m_Stage2[i] = goal;
+			}
+			if (i == 33)
+			{
+				Box* box = ActorManager::Instance().Create<Box>(static_cast<int>(Layer::Box),
+					L"Assets/red_snowbox.png");
+				box->SetPosition(startXposition, startYposition);
+				box->StageInfo = &m_Stage2;
+				box->remainBoxCount = &remainBox;
+				box->boxIndex = i;
+				box->color = "red";
+				box->indexRow = 10;
+				m_Stage2[i] = box;
+			}
+			if (i == 34)
+			{
+				Goal* goal = ActorManager::Instance().Create<Goal>(static_cast<int>(Layer::Goal),
+					L"Assets/dia_brown.png");
+				goal->SetPosition(startXposition, startYposition);
+				goal->color = "brown";
+
+				Box* box = ActorManager::Instance().Create<Box>(static_cast<int>(Layer::Box),
+					L"Assets/blue_box.png");
+				box->SetPosition(startXposition, startYposition);
+				box->StageInfo = &m_Stage2;
+				box->remainBoxCount = &remainBox;
+				box->boxIndex = i;
+				box->color = "blue";
+				box->indexRow = 10;
+				box->alreadyGoal = goal;
+				m_Stage2[i] = box;
+			}
+			if (i == 36)
+			{
+				Box* box = ActorManager::Instance().Create<Box>(static_cast<int>(Layer::Box),
+					L"Assets/brown_box.png");
+				box->SetPosition(startXposition, startYposition);
+				box->StageInfo = &m_Stage2;
+				box->remainBoxCount = &remainBox;
+				box->boxIndex = i;
+				box->color = "brown";
+				box->indexRow = 10;
+				m_Stage2[i] = box;
+			}
+
 		}
-		if (i / 10 == 4)
+		else if (i / 10 == 4)
 		{
 			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
 				L"Assets/ground_06.png");
@@ -355,7 +449,7 @@ void Game::Stage2Initialize()
 				m_Stage2[i]->SetPosition(startXposition, startYposition);
 			}
 		}
-		if (i / 10 == 5)
+		else if (i / 10 == 5)
 		{
 			if (i != 55)
 			{
@@ -375,9 +469,17 @@ void Game::Stage2Initialize()
 					L"Assets/brown_block.png");
 				m_Stage2[i]->SetPosition(startXposition, startYposition);
 			}
+			if (i == 55)
+			{
+				Goal* goal = ActorManager::Instance().Create<Goal>(static_cast<int>(Layer::Goal),
+					L"Assets/dia_green.png");
+				goal->SetPosition(startXposition, startYposition);
+				goal->color = "green";
+				m_Stage2[i] = goal;
+			}
 			
 		}
-		if (i / 10 == 6)
+		else if (i / 10 == 6)
 		{
 			auto pTile = ActorManager::Instance().Create<Actor>(static_cast<int>(Layer::Tile),
 				L"Assets/ground_05.png");
@@ -402,15 +504,16 @@ void Game::Retry()
 {
 	m_Player->Reset();
 	m_Player = nullptr;
-	m_Stage1.clear();
 	ActorManager::Instance().ReleaseAll();
 
 	if (stageNum == 1)
 	{
+		m_Stage1.clear();
 		Stage1Initialize();
 	}
 	else if (stageNum == 2)
 	{
+		m_Stage2.clear();
 		Stage2Initialize();
 	}
 }
@@ -441,15 +544,21 @@ void Game::Render()
 	m_deviceResources->PIXBeginEvent(L"Render");
 
 	std::wstring output = L"Walk Count: " + std::to_wstring(walkCount) + L"  /  Remain Box Count: " + std::to_wstring(remainBox);
-
 	m_fontPos.x = 125.f;
 	m_fontPos.y = 20.f;
+	std::wstring retrykey = L"Retry : R Key";
+	m_fontPos2.x = 300.f;
+	m_fontPos2.y = 540.f;
 
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
 
 
+
 	m_font->DrawString(m_spriteBatch.get(), output.c_str(),
 		m_fontPos, Colors::White, 0.f);
+
+	m_font->DrawString(m_spriteBatch.get(), retrykey.c_str(),
+		m_fontPos2, Colors::White, 0.f);
 
 	ActorManager().Instance().Draw(m_spriteBatch.get());
 

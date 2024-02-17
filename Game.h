@@ -56,6 +56,7 @@ protected:
 	std::unique_ptr<DirectX::CommonStates> m_commonStates;
 	std::unique_ptr<DirectX::SpriteFont> m_font;
 	DirectX::SimpleMath::Vector2 m_fontPos;
+	DirectX::SimpleMath::Vector2 m_fontPos2;
 
 	DX::Player* m_Player;
 	std::vector<Actor*> m_Stage1;

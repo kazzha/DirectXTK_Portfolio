@@ -179,17 +179,17 @@ void Player::Update(double delta, WPARAM wParam)
 		Play();
 		AnimatedActor::Update(delta);
 
-		if (PlayerIndex - 8 < 0) return;
+		if (PlayerIndex - indexRow < 0) return;
 
-		if (dynamic_cast<Wall*>((*StageInfo)[PlayerIndex - 8]) != nullptr)
+		if (dynamic_cast<Wall*>((*StageInfo)[PlayerIndex - indexRow]) != nullptr)
 		{
 			return;
 		}
-		else if ((*StageInfo)[PlayerIndex - 8] == nullptr)
+		else if ((*StageInfo)[PlayerIndex - indexRow] == nullptr)
 		{
-			(*StageInfo)[PlayerIndex - 8] = this;
-			PlayerIndex -= 8;
-			(*StageInfo)[PlayerIndex + 8] = nullptr;
+			(*StageInfo)[PlayerIndex - indexRow] = this;
+			PlayerIndex -= indexRow;
+			(*StageInfo)[PlayerIndex + indexRow] = nullptr;
 			Move(m_position.x, m_position.y - 64);
 			(*walkCount)++;
 			if (alreadyGoal != nullptr)
@@ -198,23 +198,23 @@ void Player::Update(double delta, WPARAM wParam)
 				alreadyGoal = nullptr;
 			}
 		}
-		else if (dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - 8]) != nullptr)
+		else if (dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - indexRow]) != nullptr)
 		{
 			if (currentGoal == nullptr)
 			{
-				currentGoal = dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - 8]);
-				(*StageInfo)[PlayerIndex - 8] = this;
-				PlayerIndex -= 8;
+				currentGoal = dynamic_cast<Goal*>((*StageInfo)[PlayerIndex - indexRow]);
+				(*StageInfo)[PlayerIndex - indexRow] = this;
+				PlayerIndex -= indexRow;
 				Move(m_position.x, m_position.y - 64);
-				(*StageInfo)[PlayerIndex + 8] = alreadyGoal;
+				(*StageInfo)[PlayerIndex + indexRow] = alreadyGoal;
 				alreadyGoal = currentGoal;
 				currentGoal = nullptr;
 				(*walkCount)++;
 			}
 		}
-		else if (dynamic_cast<Box*>((*StageInfo)[PlayerIndex - 8]) != nullptr)
+		else if (dynamic_cast<Box*>((*StageInfo)[PlayerIndex - indexRow]) != nullptr)
 		{
-			Box* boxPointer = dynamic_cast<Box*>((*StageInfo)[PlayerIndex - 8]);
+			Box* boxPointer = dynamic_cast<Box*>((*StageInfo)[PlayerIndex - indexRow]);
 			if (boxPointer->MoveBackward())
 			{
 				if (boxPointer->alreadyGoal != nullptr)
@@ -227,13 +227,13 @@ void Player::Update(double delta, WPARAM wParam)
 						boxPointer->currentGoal = nullptr;
 					}
 				}
-				PlayerIndex -= 8;
+				PlayerIndex -= indexRow;
 				(*StageInfo)[PlayerIndex] = this;
-				(*StageInfo)[PlayerIndex + 8] = nullptr;
+				(*StageInfo)[PlayerIndex + indexRow] = nullptr;
 				Move(m_position.x, m_position.y - 64);
 				if (alreadyGoal != nullptr)
 				{
-					(*StageInfo)[PlayerIndex + 8] = alreadyGoal;
+					(*StageInfo)[PlayerIndex + indexRow] = alreadyGoal;
 					alreadyGoal = nullptr;
 				}
 				else
@@ -256,42 +256,42 @@ void Player::Update(double delta, WPARAM wParam)
 		Play();
 		AnimatedActor::Update(delta);
 
-		if (PlayerIndex + 8 > 54) return;
+		if (PlayerIndex + indexRow > 54) return;
 
-		if (dynamic_cast<Wall*>((*StageInfo)[PlayerIndex + 8]) != nullptr)
+		if (dynamic_cast<Wall*>((*StageInfo)[PlayerIndex + indexRow]) != nullptr)
 		{
 			return;
 		}
-		else if ((*StageInfo)[PlayerIndex + 8] == nullptr)
+		else if ((*StageInfo)[PlayerIndex + indexRow] == nullptr)
 		{
-			(*StageInfo)[PlayerIndex + 8] = (*StageInfo)[PlayerIndex];
-			PlayerIndex += 8;
-			(*StageInfo)[PlayerIndex - 8] = nullptr;
+			(*StageInfo)[PlayerIndex + indexRow] = (*StageInfo)[PlayerIndex];
+			PlayerIndex += indexRow;
+			(*StageInfo)[PlayerIndex - indexRow] = nullptr;
 			Move(m_position.x, m_position.y + 64);
 			(*walkCount)++;
 			if (alreadyGoal != nullptr)
 			{
-				(*StageInfo)[PlayerIndex - 8] = alreadyGoal;
+				(*StageInfo)[PlayerIndex - indexRow] = alreadyGoal;
 				alreadyGoal = nullptr;
 			}
 		}
-		else if (dynamic_cast<Goal*>((*StageInfo)[PlayerIndex + 8]) != nullptr)
+		else if (dynamic_cast<Goal*>((*StageInfo)[PlayerIndex + indexRow]) != nullptr)
 		{
 			if (currentGoal == nullptr)
 			{
-				currentGoal = dynamic_cast<Goal*>((*StageInfo)[PlayerIndex + 8]);
-				(*StageInfo)[PlayerIndex + 8] = this;
-				PlayerIndex += 8;
+				currentGoal = dynamic_cast<Goal*>((*StageInfo)[PlayerIndex + indexRow]);
+				(*StageInfo)[PlayerIndex + indexRow] = this;
+				PlayerIndex += indexRow;
 				Move(m_position.x, m_position.y + 64);
 				(*walkCount)++;
-				(*StageInfo)[PlayerIndex - 8] = alreadyGoal;
+				(*StageInfo)[PlayerIndex - indexRow] = alreadyGoal;
 				alreadyGoal = currentGoal;
 				currentGoal = nullptr;
 			}
 		}
-		else if (dynamic_cast<Box*>((*StageInfo)[PlayerIndex + 8]) != nullptr)
+		else if (dynamic_cast<Box*>((*StageInfo)[PlayerIndex + indexRow]) != nullptr)
 		{
-			Box* boxPointer = dynamic_cast<Box*>((*StageInfo)[PlayerIndex + 8]);
+			Box* boxPointer = dynamic_cast<Box*>((*StageInfo)[PlayerIndex + indexRow]);
 			if (boxPointer->MoveForward())
 			{
 				if (boxPointer->alreadyGoal != nullptr)
@@ -304,14 +304,14 @@ void Player::Update(double delta, WPARAM wParam)
 						boxPointer->currentGoal = nullptr;
 					}
 				}
-				PlayerIndex += 8;
+				PlayerIndex += indexRow;
 				(*StageInfo)[PlayerIndex] = this;
-				(*StageInfo)[PlayerIndex - 8] = nullptr;
+				(*StageInfo)[PlayerIndex - indexRow] = nullptr;
 				Move(m_position.x, m_position.y + 64);
 				(*walkCount)++;
 				if (alreadyGoal != nullptr)
 				{
-					(*StageInfo)[PlayerIndex - 8] = alreadyGoal;
+					(*StageInfo)[PlayerIndex - indexRow] = alreadyGoal;
 					alreadyGoal = nullptr;
 				}
 				else

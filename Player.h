@@ -18,6 +18,7 @@ namespace DX
         Goal* currentGoal;
         Goal* alreadyGoal;
         int* walkCount;
+        int indexRow;
     };
 }
 

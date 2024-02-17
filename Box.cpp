@@ -10,69 +10,98 @@ DX::Box::~Box()
 
 bool DX::Box::MoveForward()
 {
-	if ((*StageInfo)[boxIndex + 8] == nullptr)
+	if ((*StageInfo)[boxIndex + indexRow] == nullptr)
 	{
-		boxIndex += 8;
+		boxIndex += indexRow;
 		(*StageInfo)[boxIndex] = this;
 		m_position.y += 64;
-		(*StageInfo)[boxIndex - 8] = nullptr;
+		(*StageInfo)[boxIndex - indexRow] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
-	else if (dynamic_cast<Wall*>((*StageInfo)[boxIndex + 8]) != nullptr)
+	else if (dynamic_cast<Wall*>((*StageInfo)[boxIndex + indexRow]) != nullptr)
 	{
 		return false;
 	}
-	else if (dynamic_cast<Goal*>((*StageInfo)[boxIndex + 8]) != nullptr)
+	else if (dynamic_cast<Goal*>((*StageInfo)[boxIndex + indexRow]) != nullptr)
 	{
-		currentGoal = dynamic_cast<Goal*>((*StageInfo)[boxIndex + 8]);
+		currentGoal = dynamic_cast<Goal*>((*StageInfo)[boxIndex + indexRow]);
 		if (currentGoal->color == this->color)
 		{
 			(*remainBoxCount) -= 1;
 		}
-		boxIndex += 8;
+		boxIndex += indexRow;
 		(*StageInfo)[boxIndex] = this;
 		m_position.y += 64;
-		(*StageInfo)[boxIndex - 8] = nullptr;
+		(*StageInfo)[boxIndex - indexRow] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
-	else if (dynamic_cast<Box*>((*StageInfo)[boxIndex + 8]) != nullptr)
+	else if (dynamic_cast<Box*>((*StageInfo)[boxIndex + indexRow]) != nullptr)
 	{
 		return false;
 	}
+	
 }
 
 bool DX::Box::MoveBackward()
 {
-	if ((*StageInfo)[boxIndex - 8] == nullptr)
+	if ((*StageInfo)[boxIndex - indexRow] == nullptr)
 	{
-		boxIndex -= 8;
+		boxIndex -= indexRow;
 		(*StageInfo)[boxIndex] = this;
 		m_position.y -= 64;
-		(*StageInfo)[boxIndex + 8] = nullptr;
+		(*StageInfo)[boxIndex + indexRow] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
-	else if (dynamic_cast<Wall*>((*StageInfo)[boxIndex - 8]) != nullptr)
+	else if (dynamic_cast<Wall*>((*StageInfo)[boxIndex - indexRow]) != nullptr)
 	{
 		return false;
 	}
-	else if (dynamic_cast<Goal*>((*StageInfo)[boxIndex - 8]) != nullptr)
+	else if (dynamic_cast<Goal*>((*StageInfo)[boxIndex - indexRow]) != nullptr)
 	{
-		currentGoal = dynamic_cast<Goal*>((*StageInfo)[boxIndex - 8]);
+		currentGoal = dynamic_cast<Goal*>((*StageInfo)[boxIndex - indexRow]);
 		if (currentGoal->color == this->color)
 		{
 			(*remainBoxCount) -= 1;
 		}
-		boxIndex -= 8;
+		boxIndex -= indexRow;
 		(*StageInfo)[boxIndex] = this;
 		m_position.y -= 64;
-		(*StageInfo)[boxIndex + 8] = nullptr;
+		(*StageInfo)[boxIndex + indexRow] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
-	else if (dynamic_cast<Box*>((*StageInfo)[boxIndex - 8]) != nullptr)
+	else if (dynamic_cast<Box*>((*StageInfo)[boxIndex - indexRow]) != nullptr)
 	{
 		return false;
 	}
@@ -86,6 +115,13 @@ bool DX::Box::MoveLeft()
 		(*StageInfo)[boxIndex] = this;
 		m_position.x -= 64;
 		(*StageInfo)[boxIndex + 1] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
@@ -104,6 +140,13 @@ bool DX::Box::MoveLeft()
 		(*StageInfo)[boxIndex] = this;
 		m_position.x -= 64;
 		(*StageInfo)[boxIndex + 1] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
@@ -121,6 +164,13 @@ bool DX::Box::MoveRight()
 		(*StageInfo)[boxIndex] = this;
 		m_position.x += 64;
 		(*StageInfo)[boxIndex - 1] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
@@ -139,6 +189,13 @@ bool DX::Box::MoveRight()
 		(*StageInfo)[boxIndex] = this;
 		m_position.x += 64;
 		(*StageInfo)[boxIndex - 1] = nullptr;
+		if (alreadyGoal != nullptr)
+		{
+			if (alreadyGoal->color == this->color)
+			{
+				(*remainBoxCount) += 1;
+			}
+		}
 
 		return true;
 	}
