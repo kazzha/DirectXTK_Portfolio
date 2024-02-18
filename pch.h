@@ -88,6 +88,7 @@
 #include "TextureManager.h"
 #include "JSONManager.h"
 #include "Actor.h"
+#include "StageNotify.h"
 #include "Wall.h"
 #include "Goal.h"
 #include "AnimatedActor.h"

@@ -28,6 +28,7 @@ Game::Game() noexcept(false)
 	walkCount = 0;
 	remainBox = 0;
 	stageNum = 1;
+	AccumulateTime = 0.0;
 }
 
 Game::~Game()
@@ -76,13 +77,23 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		ExitGame();
 	}
-
+	
 	ActorManager::Instance().Update(timer.GetElapsedSeconds());
 
 	if (remainBox == 0)
 	{
-		stageNum = 2;
-		StageChange();
+		if (AccumulateTime == 0.0)
+		{
+			ActorManager::Instance().ReleaseAll();
+			StageChangeFont();
+		}
+		
+		if (AccumulateTime >= 2.0)
+		{
+			stageNum = 2;
+			StageChange();
+			AccumulateTime = 0.0;
+		}
 	}
 }
 
@@ -523,6 +534,26 @@ void Game::StageChange()
 	Retry();
 }
 
+void Game::StageChangeFont()
+{
+	if (stageNum == 1)
+	{
+		StageNotify* StageNF = ActorManager::Instance().Create<StageNotify>(static_cast<int>(Layer::Wall),
+			L"Assets/STAGE2.png");
+		StageNF->SetPosition(400.f, 300.f);
+		StageNF->deltaTime = &AccumulateTime;
+	}
+	else
+	{
+		StageNotify* StageNF = ActorManager::Instance().Create<StageNotify>(static_cast<int>(Layer::Wall),
+			L"Assets/COMPLETE.png");	
+		StageNF->SetPosition(400.f, 300.f);
+		StageNF->deltaTime = &AccumulateTime;
+	}
+
+	
+}
+
 void Game::GetDefaultSize(int& width, int& height) const noexcept
 {
 	width = 800;
@@ -536,7 +567,7 @@ void Game::Render()
 {
 	if (m_timer.GetFrameCount() == 0) // 한번도 Update()가 호출된 적이 없으면 렌더링 하지 않음
 	{
-		return;
+		return;    
 	}
 
 	Clear();
@@ -552,13 +583,14 @@ void Game::Render()
 
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
 
+	if (AccumulateTime == 0.0)
+	{
+		m_font->DrawString(m_spriteBatch.get(), output.c_str(),
+			m_fontPos, Colors::White, 0.f);
 
-
-	m_font->DrawString(m_spriteBatch.get(), output.c_str(),
-		m_fontPos, Colors::White, 0.f);
-
-	m_font->DrawString(m_spriteBatch.get(), retrykey.c_str(),
-		m_fontPos2, Colors::White, 0.f);
+		m_font->DrawString(m_spriteBatch.get(), retrykey.c_str(),
+			m_fontPos2, Colors::White, 0.f);
+	}
 
 	ActorManager().Instance().Draw(m_spriteBatch.get());
 

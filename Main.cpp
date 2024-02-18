@@ -15,8 +15,6 @@ namespace
 		void Initialize(HWND window, int width, int height) override
 		{
 			Game::Initialize(window, width, height);
-
-
 		}
 	protected:
 		void Update(DX::StepTimer const& timer) override

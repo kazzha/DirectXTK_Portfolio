@@ -27,12 +27,13 @@ namespace DX
 		JsonManager(JsonManager const&) = delete;
 		JsonManager& operator= (JsonManager const&) = delete;
 
-		rapidjson::WDocument* CreateDocument(LPCWSTR filename);
+		rapidjson::WDocument* CreateDocument(LPCWSTR filename); 
 		void Remove(LPCWSTR filename);
 		void ReleaseAll();
 
 	private:
 		std::map<std::wstring, std::unique_ptr<rapidjson::WDocument>> m_documents;
+		
 	};
 
 }

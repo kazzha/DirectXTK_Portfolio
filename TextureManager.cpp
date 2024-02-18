@@ -60,8 +60,8 @@ ID3D11ShaderResourceView* DX::TextureManager::CreateShaderResourceView(LPCWSTR f
 	if (result.second == true)
 	{
 		auto view = ComPtr<ID3D11ShaderResourceView>();
-		CreateWICTextureFromFile(device, filename, NULL, view.GetAddressOf());
-		result.first->second = view.Detach();
+		CreateWICTextureFromFile(device, filename, NULL, view.GetAddressOf()); // 세이더 리소스 뷰 생성해 view에 할당
+		result.first->second = view.Detach(); // ComPtr의 소유권을 해제하고 해당 포인터 반환
 	}
 
 	return result.first->second.Get();

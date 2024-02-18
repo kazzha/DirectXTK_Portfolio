@@ -32,6 +32,7 @@ public:
 	void Stage2Initialize();
 	void Retry();
 	void StageChange();
+	void StageChangeFont();
 
 
 	virtual void GetDefaultSize(int& width, int& height) const noexcept;
@@ -64,5 +65,6 @@ protected:
 	int walkCount;
 	int remainBox;
 	int stageNum;
+	double AccumulateTime;
 };
 

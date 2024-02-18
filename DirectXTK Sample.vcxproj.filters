@@ -25,6 +25,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="StageNotify.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="StageNotify.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

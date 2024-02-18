@@ -33,6 +33,8 @@ namespace DX
 	private:
 		DeviceResources* m_pDeviceResources;
 		std::map<std::wstring, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_shaderResources;
+		// ID3D11ShaderResourceView : GPU에 저장된 텍스쳐를 세이더에서 읽을 수 있도록 하는 뷰 -> 세이더에서 텍스쳐의 픽셀 데이터를 읽을 수 있게 됨
+		// 세이더는 바보라서 텍스쳐 샘플러라는 텍스처를 읽을 도구를 가지고 텍스처를 읽음.
 	};
 }
 
